@@ -1,10 +1,11 @@
+# tests/conftest.py
+
 import pytest_asyncio
 import asyncio
 from httpx import AsyncClient
-from store.main import app
 from store.core.db import db_client
 
-# Usar um loop de eventos diferente para os testes, se necessário
+# Esta fixture cria um event loop para toda a sessão de testes
 @pytest_asyncio.fixture(scope="session")
 def event_loop():
     loop = asyncio.get_event_loop_policy().new_event_loop()
@@ -13,13 +14,13 @@ def event_loop():
 
 @pytest_asyncio.fixture
 async def client() -> AsyncClient:
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(base_url="http://127.0.0.1:8001") as ac:
         yield ac
 
+# Esta fixture limpa o banco de dados após cada teste
 @pytest_asyncio.fixture(autouse=True)
 async def clear_collections():
     yield
-    # Limpa a coleção de produtos depois de cada teste
     collections = await db_client.get_database().list_collection_names()
     if "products" in collections:
         await db_client.get_database().drop_collection("products")
