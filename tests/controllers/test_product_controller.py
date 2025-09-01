@@ -49,7 +49,7 @@ async def test_should_update_product(client: AsyncClient):
     update_data = {"price": "8000.00", "quantity": 5}
     response_update = await client.patch(f"/products/{product_id}", json=update_data)
     assert response_update.status_code == 200
-    assert response_update.json()["price"] == "8000.0" # Decimal vem como string
+    assert response_update.json()["price"] == "8000.00" # Decimal vem como string
     assert response_update.json()["quantity"] == 5
 
 @pytest.mark.asyncio

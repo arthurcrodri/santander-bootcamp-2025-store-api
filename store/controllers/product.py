@@ -11,7 +11,10 @@ async def create(body: ProductIn = Body(...)) -> ProductOut:
     try:
         return await product_usecase.create_product(body=body)
     except Exception as e:
-        # Requisito: Mapear uma exceção, caso dê algum erro de inserção
+        
+        import traceback
+        traceback.print_exc()
+
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @router.get(path="/{id}", status_code=status.HTTP_200_OK)
