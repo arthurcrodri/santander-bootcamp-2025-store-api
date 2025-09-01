@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from decimal import Decimal
 from pydantic import BaseModel, Field, UUID4
 from datetime import datetime
@@ -21,5 +21,7 @@ class ProductUpdate(BaseModel):
     quantity: Optional[int] = Field(None, description="Product quantity")
     price: Optional[Decimal] = Field(None, description="Product price")
     status: Optional[bool] = Field(None, description="Product status")
-    # Para cumprir o requisito de poder modificar updated_at manualmente
     updated_at: Optional[datetime] = Field(None, description="Last update timestamp")
+
+class ProductUpdateOut(ProductOut):
+    ...
