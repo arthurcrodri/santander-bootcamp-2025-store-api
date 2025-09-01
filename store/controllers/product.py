@@ -1,10 +1,17 @@
-from fastapi import APIRouter
+# store/controllers/product.py
 
-router = APIRouter(prefix="/products")
+from fastapi import APIRouter, Body, status
+from store.schemas.product import ProductIn, ProductOut
+from store.usecases.product import product_usecase
 
-@router.post("/")
-async def create():
-    pass
+router = APIRouter(prefix="/products", tags=["products"])
+
+@router.post(path="/", status_code=status.HTTP_201_CREATED)
+async def create(body: ProductIn = Body(...)) -> ProductOut:
+    """
+    Cria um novo produto na base de dados.
+    """
+    return await product_usecase.create_product(body=body)
 
 @router.get("/{id}")
 async def get(id: str):
